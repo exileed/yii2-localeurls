@@ -201,7 +201,7 @@ class UrlManager extends BaseUrlManager
                 foreach ($this->ignoreLanguageUrlPatterns as $k => $pattern) {
                     if (preg_match($pattern, $pathInfo)) {
                         $message = "Ignore pattern '$pattern' matches '$pathInfo.' Skipping language processing.";
-                        Yii::trace($message, __METHOD__);
+                       Yii::info($message, __METHOD__);
                         $process = false;
                     }
                 }
@@ -374,7 +374,7 @@ class UrlManager extends BaseUrlManager
                 }
             }
             Yii::$app->language = $language;
-            Yii::trace("Language code found in URL. Setting application language to '$language'.", __METHOD__);
+           Yii::info("Language code found in URL. Setting application language to '$language'.", __METHOD__);
             if ($this->enableLanguagePersistence) {
                 $this->persistLanguage($language);
             }
@@ -425,7 +425,7 @@ class UrlManager extends BaseUrlManager
         if ($this->hasEventHandlers(self::EVENT_LANGUAGE_CHANGED)) {
             $oldLanguage = $this->loadPersistedLanguage();
             if ($oldLanguage !== $language) {
-                Yii::trace("Triggering languageChanged event: $oldLanguage -> $language", __METHOD__);
+               Yii::info("Triggering languageChanged event: $oldLanguage -> $language", __METHOD__);
                 $this->trigger(self::EVENT_LANGUAGE_CHANGED, new LanguageChangedEvent([
                     'oldLanguage' => $oldLanguage,
                     'language' => $language,
@@ -434,7 +434,7 @@ class UrlManager extends BaseUrlManager
         }
         if ($this->languageSessionKey !== false) {
             Yii::$app->session[$this->languageSessionKey] = $language;
-            Yii::trace("Persisting language '$language' in session.", __METHOD__);
+           Yii::info("Persisting language '$language' in session.", __METHOD__);
         }
         if ($this->languageCookieDuration) {
             $cookie = new Cookie(array_merge(
@@ -447,7 +447,7 @@ class UrlManager extends BaseUrlManager
                 ]
             ));
             Yii::$app->getResponse()->getCookies()->add($cookie);
-            Yii::trace("Persisting language '$language' in cookie.", __METHOD__);
+           Yii::info("Persisting language '$language' in cookie.", __METHOD__);
         }
     }
 
@@ -459,11 +459,11 @@ class UrlManager extends BaseUrlManager
         $language = null;
         if ($this->languageSessionKey !== false) {
             $language = Yii::$app->session->get($this->languageSessionKey);
-            $language!==null && Yii::trace("Found persisted language '$language' in session.", __METHOD__);
+            $language!==null &&Yii::info("Found persisted language '$language' in session.", __METHOD__);
         }
         if ($language === null) {
             $language = $this->_request->getCookies()->getValue($this->languageCookieName);
-            $language!==null && Yii::trace("Found persisted language '$language' in cookie.", __METHOD__);
+            $language!==null &&Yii::info("Found persisted language '$language' in cookie.", __METHOD__);
         }
         return $language;
     }
@@ -479,7 +479,7 @@ class UrlManager extends BaseUrlManager
                 list($language,$country) = $this->matchCode($acceptable);
                 if ($language!==null) {
                     $language = $country === null ? $language : "$language-$country";
-                    Yii::trace("Detected browser language '$language'.", __METHOD__);
+                   Yii::info("Detected browser language '$language'.", __METHOD__);
                     return $language;
                 }
             }
@@ -488,7 +488,7 @@ class UrlManager extends BaseUrlManager
             foreach ($this->geoIpLanguageCountries as $key => $codes) {
                 $country = $_SERVER[$this->geoIpServerVar];
                 if (in_array($country, $codes)) {
-                    Yii::trace("Detected GeoIp language '$key'.", __METHOD__);
+                   Yii::info("Detected GeoIp language '$key'.", __METHOD__);
                     return $key;
                 }
             }
@@ -615,7 +615,7 @@ class UrlManager extends BaseUrlManager
         if ($url === $this->_request->url) {
             return;
         }
-        Yii::trace("Redirecting to $url.", __METHOD__);
+        Yii::info("Redirecting to $url.", __METHOD__);
         Yii::$app->getResponse()->redirect($url);
         if (YII2_LOCALEURLS_TEST) {
             // Response::redirect($url) above will call `Url::to()` internally.
