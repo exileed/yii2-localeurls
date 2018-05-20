@@ -5,7 +5,7 @@ defined('YII2_LOCALEURLS_TEST') || define('YII2_LOCALEURLS_TEST', false);
 
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\web\Cookie;
+use yii\http\Cookie;
 use yii\web\UrlManager as BaseUrlManager;
 use yii\web\UrlNormalizerRedirectException;
 
